@@ -178,5 +178,3 @@ onkey(lambda: change(0, -5), 'Down')
 world()
 move()
 done()
-
-99
