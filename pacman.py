@@ -1,4 +1,4 @@
-# Nathan Jayasena
+# Nathan Jayasena, Ali Riaz
 
 
 """Pacman, classic arcade game.
