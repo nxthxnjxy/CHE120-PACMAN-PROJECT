@@ -1,4 +1,4 @@
-# Nathan Jayasena, Ali Riaz, Jacob Finch, Blake Pedersen
+# Nathan Jayasena (N.J.), Ali Riaz (A.R.), Jacob Finch (J.F), Blake Pedersen (B.P.)
 
 
 """Pacman, classic arcade game.
