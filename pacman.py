@@ -17,17 +17,40 @@ from turtle import *
 
 from freegames import floor, vector
 
+# (N.J.) Initialize the game state with a dictionary 'state' containing the current score, starting at 0.
 state = {'score': 0}
+
+# (N.J.) Create a Turtle object 'path' to represent the game board visually. This Turtle is set as invisible ('visible=False')
+# (N.J.) as it is solely used for drawing and doesn't need to be displayed during gameplay.
+
 path = Turtle(visible=False)
+
+# (N.J.) Create a Turtle object 'writer' to display relevant information, such as the player's score.
+# (N.J.) Similar to 'path', this Turtle is set as invisible ('visible=False') since it's not meant to be seen during gameplay.
+
 writer = Turtle(visible=False)
+
+# (N.J.) Define the initial direction for movement ('aim') with a vector (5, 0), indicating movement to the right
+# (N.J.) at a speed of 5 units per step.
+
 aim = vector(5, 0)
+
+# (N.J.) Set the initial position of the Pacman character to (-40, -80), representing its starting point on the game board.
+
 pacman = vector(-40, -80)
+
+# (N.J.) Initialize the positions and movement directions of four ghosts in the game.
+# (N.J.) Each ghost is represented as a list containing a vector for its starting position and another vector for its initial movement direction.
+# (N.J.) The direction vector is given by an x and y value represented by (x,y). If x is positive, the direction is right, if x is negative, the direction is left
+# (N.J.) If y is positive, the direction is up, if y is negative, the direction is down.
+
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(5, 0)],    # (N.J.) Ghost 1 starting position and initial movement direction, right.
+    [vector(-180, -160), vector(0, 5)],   # (N.J.) Ghost 2 starting position and initial movement direction, up.
+    [vector(100, 160), vector(0, -5)],    # (N.J.) Ghost 3 starting position and initial movement direction, down.
+    [vector(100, -160), vector(-5, 0)],   # (N.J.) Ghost 4 starting position and initial movement direction, left.
 ]
+
 # fmt: off
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
