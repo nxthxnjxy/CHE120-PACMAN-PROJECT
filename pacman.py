@@ -13,11 +13,11 @@ Exercises
 """
 
 from random import choice
-#Imports the choice function from the random module.
+# (A.R.) Imports the choice function from the random module.
 from turtle import *
-#Imports everything from the turtle module.
+# (A.R.) Imports everything from the turtle module.
 from freegames import floor, vector
-#Imports functions "floor" and "vector" from a custom module named freegames.
+# (A.R) Imports functions "floor" and "vector" from a custom module named freegames.
 
 # (N.J.) Initialize the game state with a dictionary 'state' containing the current score, starting at 0.
 state = {'score': 0}
@@ -74,7 +74,7 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 # fmt: on
-
+# (A.R.) A list representing the layout of the game world. It uses a flattened representation of a 20x20 grid, where 0 represents a wall, 1 represents a dot, and 2 represents an empty space.
 
 def square(x, y):
     """Draw square using path at (x, y)."""
@@ -82,6 +82,7 @@ def square(x, y):
     path.goto(x, y)
     path.down()
     path.begin_fill()
+# (A.R.) Draws a square at the specified coordinates using the path turtle
 
     for count in range(4):
         path.forward(20)
@@ -96,7 +97,7 @@ def offset(point):
     y = (180 - floor(point.y, 20)) / 20
     index = int(x + y * 20)
     return index
-
+# (A.R.) Calculates the offset of a point in the tiles list.
 
 def valid(point):
     """Return True if point is valid in tiles."""
@@ -111,12 +112,13 @@ def valid(point):
         return False
 
     return point.x % 20 == 0 or point.y % 20 == 0
-
+# (A.R.) Checks if a given point is valid in the game world (as not a wall).
 
 def world():
     """Draw world using path."""
     bgcolor('black')
     path.color('blue')
+#(A.R.) Draws the entire game world using the path turtle. It uses the square function and sets the background color to black.
 
     for index in range(len(tiles)):
         tile = tiles[index]
@@ -134,6 +136,7 @@ def world():
 
 def move():
     """Move pacman and all ghosts."""
+# (A.R.) Handles the movement of Pacman and ghosts. It updates the positions, checks for collisions, and continues the game loop
     writer.undo()
     writer.write(state['score'])
 
