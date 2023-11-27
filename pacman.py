@@ -20,8 +20,7 @@ from freegames import floor, vector
 # (N.J.) Initialize the game state with a dictionary 'state' containing the current score, starting at 0.
 state = {'score': 0}
 
-# (N.J.) Create a Turtle object 'path' to represent the game board visually. This Turtle is set as invisible ('visible=False')
-# (N.J.) as it is solely used for drawing and doesn't need to be displayed during gameplay.
+# (N.J.) Create a Turtle object 'path' to represent the game board visually. This Turtle is set as invisible ('visible=False') as it is solely used for drawing and doesn't need to be displayed during gameplay.
 
 path = Turtle(visible=False)
 
@@ -30,8 +29,7 @@ path = Turtle(visible=False)
 
 writer = Turtle(visible=False)
 
-# (N.J.) Define the initial direction for movement ('aim') with a vector (5, 0), indicating movement to the right
-# (N.J.) at a speed of 5 units per step.
+# (N.J.) Define the initial direction for movement ('aim') with a vector (5, 0), indicating movement to the right at a speed of 5 units per step.
 
 aim = vector(5, 0)
 
@@ -41,8 +39,7 @@ pacman = vector(-40, -80)
 
 # (N.J.) Initialize the positions and movement directions of four ghosts in the game.
 # (N.J.) Each ghost is represented as a list containing a vector for its starting position and another vector for its initial movement direction.
-# (N.J.) The direction vector is given by an x and y value represented by (x,y). If x is positive, the direction is right, if x is negative, the direction is left
-# (N.J.) If y is positive, the direction is up, if y is negative, the direction is down.
+# (N.J.) The direction vector is given by an x and y value represented by (x,y). If x is positive, the direction is right, if x is negative, the direction is left. If y is positive, the direction is up, if y is negative, the direction is down.
 
 ghosts = [
     [vector(-180, 160), vector(5, 0)],    # (N.J.) Ghost 1 starting position and initial movement direction, right.
@@ -184,23 +181,42 @@ def move():
 
 
 def change(x, y):
-    """Change pacman aim if valid."""
+    # (N.J.) Change pacman aim if valid.
+    # (N.J.) The function 'change' modifies the direction of Pacman's movement based on the changes in the x and y coordinates (x, y) given as parameters. It checks if the new position obtained by adding the vector (x, y) to the current Pacman position is valid using the 'valid' function.
     if valid(pacman + vector(x, y)):
+        # (N.J.) If the new position is valid, update the 'aim' vector with the new x and y values.
         aim.x = x
         aim.y = y
 
 
+# (N.J.) Set up the game window with dimensions 420x420 and an initial window position at (370, 0).
 setup(420, 420, 370, 0)
+
+# (N.J.) Hide the default turtle cursor for a cleaner appearance.
 hideturtle()
+
+# (N.J.) Turn off animation rendering to improve performance by updating the screen only after the entire frame is drawn.
 tracer(False)
+
+# (N.J.) Position the 'writer' Turtle at coordinates (160, 160), set its color to white, and display the initial score.
 writer.goto(160, 160)
 writer.color('white')
 writer.write(state['score'])
+
+# (N.J.) Enable the program to respond to keyboard inputs.
 listen()
+
+# (N.J.) Set up keyboard bindings to associate arrow key presses with corresponding calls to the 'change' function, modifying Pacman's aim vector based on the desired direction.
 onkey(lambda: change(5, 0), 'Right')
 onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
 onkey(lambda: change(0, -5), 'Down')
+
+# (N.J.) Initialize the game environment.
 world()
+
+# (N.J.) Initiate the game loop, handling Pacman and ghost movement, collision detection, and score updates.
 move()
+
+# (N.J.) Conclude the execution of the program, allowing the user to close the game window.
 done()
