@@ -13,9 +13,11 @@ Exercises
 """
 
 from random import choice
+#Imports the choice function from the random module.
 from turtle import *
-
+#Imports everything from the turtle module.
 from freegames import floor, vector
+#Imports functions "floor" and "vector" from a custom module named freegames.
 
 # (N.J.) Initialize the game state with a dictionary 'state' containing the current score, starting at 0.
 state = {'score': 0}
