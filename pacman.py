@@ -13,11 +13,11 @@ Exercises
 """
 
 from random import choice
-#Imports the choice function from the random module.
+# (A.R.) Imports the choice function from the random module.
 from turtle import *
-#Imports everything from the turtle module.
+# (A.R.) Imports everything from the turtle module.
 from freegames import floor, vector
-#Imports functions "floor" and "vector" from a custom module named freegames.
+# (A.R) Imports functions "floor" and "vector" from a custom module named freegames.
 
 # (N.J.) Initialize the game state with a dictionary 'state' containing the current score, starting at 0.
 state = {'score': 0}
@@ -77,13 +77,17 @@ tiles = [
 # (J.F.) There can also be 2's on the map. These would represents spots where pacman can move but there is no pellets. Later in the code, we see that when pacman eats a pellet, the ones become twos.
 # (J.F.) This variable is defined as an array, with each row being one line blocks on the actual map.
 # fmt: on
+Alir3iaz-patch-3
+# (A.R.) A list representing the layout of the game world. It uses a flattened representation of a 20x20 grid, where 0 represents a wall, 1 represents a dot, and 2 represents an empty space.
 
-def square(x, y): 
+def square(x, y):
+main
     """Draw square using path at (x, y)."""
     path.up()
     path.goto(x, y)
     path.down()
     path.begin_fill()
+# (A.R.) Draws a square at the specified coordinates using the path turtle
 
     for count in range(4):
         path.forward(20)
@@ -98,7 +102,7 @@ def offset(point):
     y = (180 - floor(point.y, 20)) / 20
     index = int(x + y * 20)
     return index
-
+# (A.R.) Calculates the offset of a point in the tiles list.
 
 def valid(point):
     """Return True if point is valid in tiles."""
@@ -113,12 +117,13 @@ def valid(point):
         return False
 
     return point.x % 20 == 0 or point.y % 20 == 0
-
+# (A.R.) Checks if a given point is valid in the game world (as not a wall).
 
 def world():
     """Draw world using path."""
     bgcolor('black')
     path.color('blue')
+#(A.R.) Draws the entire game world using the path turtle. It uses the square function and sets the background color to black.
 
     for index in range(len(tiles)):
         tile = tiles[index]
@@ -136,8 +141,11 @@ def world():
 
 def move():  # (J.F.) This function helps with the movement of pacman, the ghosts, the score and removes the pellets once pacman has passed over them.)
     """Move pacman and all ghosts."""
-    writer.undo() #The writer.undo is used to undo the last operation, here it removes the previous score after Pacman consumes a pellet.
-    writer.write(state['score']) # (J.F.) This function writes the current score (state['score']) on the screen. It updates the display with the new score after undoing the previous one.
+Alir3iaz-patch-3
+# (A.R.) Handles the movement of Pacman and ghosts. It updates the positions, checks for collisions, and continues the game loop
+    writer.undo()
+    writer.write(state['score'])
+main
 
     clear() #(J.F.) Clear removes the previous positions of Pacman, ghosts, and other elements on the screen before updating their positions in the next frame.
 
