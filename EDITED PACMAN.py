@@ -133,25 +133,22 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
-    options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
-    valid_options = [option for option in options if valid(point + option)]
+        if valid(point + course):
+            point.move(course)
+        else:
+            options = [
+                vector(5, 0),
+                vector(-5, 0),
+                vector(0, 5),
+                vector(0, -5),
+            ]
+            plan = choice(options)
+            course.x = plan.x
+            course.y = plan.y
 
-    if valid_options:
-        plan = choice(valid_options)
-        course.x = plan.x
-        course.y = plan.y
-    else:
-        # No valid options, meaning the ghost is surrounded by walls.
-        # Randomly choose a direction even if it means hitting a wall.
-        plan = choice(options)
-        course.x = plan.x
-        course.y = plan.y
-
-    point.move(course)
-
-    up()
-    goto(point.x + 10, point.y + 10)
-    dot(20, 'red')
+        up()
+        goto(point.x + 10, point.y + 10)
+        dot(20, 'red')
 
 
     update()
