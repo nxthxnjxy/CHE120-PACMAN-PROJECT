@@ -231,3 +231,7 @@ onkey(lambda: change(0, -5), 'Down')
 world()
 
 # (N.J.) Initiate the game loop, handling Pacman and ghost movement, collision detection, and score updates.
+move()
+
+# (N.J.) Conclude the execution of the program, allowing the user to close the game window.
+done()
