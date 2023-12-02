@@ -73,8 +73,9 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
+# (J.F.) Tiles variable describes the map on which the game is played. The 1's represent the places where pacman can move and pellets are present. The zero are the walls where pacman cannot pass.
+# (J.F.) This variable is defined as an array, with each row being one line blocks on the actual map.
 # fmt: on
-
 
 def square(x, y):
     """Draw square using path at (x, y)."""
@@ -132,12 +133,12 @@ def world():
                 path.dot(2, 'white')
 
 
-def move():
+def move():  # (J.F.) This function helps with the movement of pacman, the ghosts, the score and removes the pellets once pacman has passed over them.)
     """Move pacman and all ghosts."""
-    writer.undo()
-    writer.write(state['score'])
+    writer.undo() #The writer.undo is used to undo the last operation, here it removes the previous score after Pacman consumes a pellet.
+    writer.write(state['score']) # (J.F.) This function writes the current score (state['score']) on the screen. It updates the display with the new score after undoing the previous one.
 
-    clear()
+    clear() #(J.F.) Clear removes the previous positions of Pacman, ghosts, and other elements on the screen before updating their positions in the next frame.
 
     if valid(pacman + aim):
         pacman.move(aim)
