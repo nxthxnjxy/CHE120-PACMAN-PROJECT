@@ -74,10 +74,11 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 # (J.F.) Tiles variable describes the map on which the game is played. The 1's represent the places where pacman can move and pellets are present. The zero are the walls where pacman cannot pass.
+# (J.F.) There can also be 2's on the map. These would represents spots where pacman can move but there is no pellets. Later in the code, we see that when pacman eats a pellet, the ones become twos.
 # (J.F.) This variable is defined as an array, with each row being one line blocks on the actual map.
 # fmt: on
 
-def square(x, y):
+def square(x, y): 
     """Draw square using path at (x, y)."""
     path.up()
     path.goto(x, y)
@@ -140,47 +141,50 @@ def move():  # (J.F.) This function helps with the movement of pacman, the ghost
 
     clear() #(J.F.) Clear removes the previous positions of Pacman, ghosts, and other elements on the screen before updating their positions in the next frame.
 
-    if valid(pacman + aim):
-        pacman.move(aim)
+    if valid(pacman + aim):  #(J.F.) This is checking if the new position of Pacman, obtained by adding the aim vector to the current position (pacman + aim), is valid, meaning that Pacman can move there (there is no wall). Uses the valid function above.
+        pacman.move(aim) #(J.F.) If the new pacman position is valid, pacman moves to that new position.
 
-    index = offset(pacman)
+    index = offset(pacman) #(J.F.) The index variable is assigned to the value returned by the offset function, which calculates the index of Pacman's position.
 
-    if tiles[index] == 1:
-        tiles[index] = 2
-        state['score'] += 1
-        x = (index % 20) * 20 - 200
-        y = 180 - (index // 20) * 20
-        square(x, y)
+    # (J.F.) Overall, the if statement above checks if pacman can move to the new desired position, and if so, pacman moves to that position. Then, it checks the index of the new position.
+    
+    if tiles[index] == 1: #(J.F.) This if statement checks if the spot pacman wants to move towards contains a pellet. It says one because 1 represents the spots with pellets on the map.
+        tiles[index] = 2 #(J.F.) If the spot where pacman moves is a pellet (1), it becomes a spot where pacman can move but there is no pellet (2).
+        state['score'] += 1 #(J.F.) Because pacman has eaten a pellet (because the if statement is true) the score is increased by one.
+        x = (index % 20) * 20 - 200 #(J.F.) This calculates the x coordinate of pacman's position.
+        y = 180 - (index // 20) * 20 #(J.F.) This calculates the y coordinate of pacman's position.
+        square(x, y) #(J.F.) Uses the square function above to redraw and add the correct changes for the square pacman has passed.
 
-    up()
-    goto(pacman.x + 10, pacman.y + 10)
-    dot(20, 'yellow')
+    up() #(J.F.) Allows to move to a new position to redraw pacman in the new position.
+    goto(pacman.x + 10, pacman.y + 10) #(J.F.) Indicates the new coordinates where pacman needs to be drawn.
+    dot(20, 'yellow') #(J.F.) This draws pacman in the new position. 20 is the radius and yellow is the color.
 
-    for point, course in ghosts:
-        if valid(point + course):
-            point.move(course)
+    for point, course in ghosts: #(J.F.) This for loop goes for each ghost, where point is the current position of the ghost, and course is the vector representing its current movement direction.
+        if valid(point + course): #(J.F.) This checks if the new position for the ghost is valid using the valid function from above. Similarly to for pacman above.
+            point.move(course) #(J.F.) If the new position for the ghost is valid, he moves to that new position.
+            #(J.F.) The if statement above means that if there is nothing blocking a ghost, he will always continue to move forward and will never unnecessarily turn.
         else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+            options = [ #(J.F.) If the ghost cannot continue on its path, a direction is chosen from the ones below for 
+                vector(5, 0), #(J.F.) The ghost could move towards the right.
+                vector(-5, 0), #(J.F.) The ghost could move towards the left.
+                vector(0, 5), #(J.F.) The ghost could move towards the top.
+                vector(0, -5), #(J.F.) The ghost could move towards the bottom.
             ]
-            plan = choice(options)
-            course.x = plan.x
-            course.y = plan.y
+            plan = choice(options) #(J.F.) The choice function from the random module is used to randomly select one vector from the options list. This selected vector is assigned to the variable plan.
+            course.x = plan.x #(J.F.) The x coordinate of the randomly chosen option is added to the ghosts plan.
+            course.y = plan.y #(J.F.) The y coordinate of the randomly chosen option is added to the ghosts plan.
 
-        up()
-        goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        up() #(J.F.) Allows to move to a new position to redraw the ghosts in the new position.
+        goto(point.x + 10, point.y + 10) #(J.F.)Indicates the new coordinates where the ghosts needs to be drawn.
+        dot(20, 'red') #(J.F.) This draws the ghosts in the new positions. 20 is the radius and red is the color.
 
-    update()
+    update() #(J.F.) The update() function is called to update the screen with the new positions and drawings.
 
-    for point, course in ghosts:
-        if abs(pacman - point) < 20:
-            return
+    for point, course in ghosts: #(J.F.) This for loop goes for each ghost, where point is the current position of the ghost, and course is the vector representing its current movement direction.
+        if abs(pacman - point) < 20: #(J.F.) The condition checks whether the absolute distance between Pacman (pacman) and the current ghost (point) is less than 20 units. If this is true, it means Pacman is close enough to the ghost to be eaten.
+            return #(J.F.) If a collision is detected, the return statement is used to exit the move function, effectively stopping the movement of Pacman and ghosts.
 
-    ontimer(move, 100)
+    ontimer(move, 100) #(J.F.) After checking for collisions, the ontimer function schedules the next call to the move function after a delay of 100 milliseconds. This creates a continuous loop for updating the game state.
 
 
 def change(x, y):
@@ -188,8 +192,8 @@ def change(x, y):
     # (N.J.) The function 'change' modifies the direction of Pacman's movement based on the changes in the x and y coordinates (x, y) given as parameters. It checks if the new position obtained by adding the vector (x, y) to the current Pacman position is valid using the 'valid' function.
     if valid(pacman + vector(x, y)):
         # (N.J.) If the new position is valid, update the 'aim' vector with the new x and y values.
-        aim.x = x
-        aim.y = y
+        aim.x = x # (J.F) The new x position for the aim vector is defined.
+        aim.y = y # (J.F) The new y position for the aim vector is defined.
 
 
 # (N.J.) Set up the game window with dimensions 420x420 and an initial window position at (370, 0).
@@ -219,7 +223,3 @@ onkey(lambda: change(0, -5), 'Down')
 world()
 
 # (N.J.) Initiate the game loop, handling Pacman and ghost movement, collision detection, and score updates.
-move()
-
-# (N.J.) Conclude the execution of the program, allowing the user to close the game window.
-done()
