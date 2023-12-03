@@ -16,7 +16,7 @@ import time
 import turtle
 
 
-time_limit = 10
+time_limit = 120
 start_time = time.time()
 elapsed_time = int(time.time() - start_time)
 
@@ -167,37 +167,35 @@ def move():
     ontimer(move, 100)
 
 
-
 def change(x, y):
     """Change pacman aim if valid."""
-    global start_time, time_left
+    global aim
 
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
 
-        elapsed_time = int(time.time() - start_time)
-        time_left = max(0, time_limit - elapsed_time)
-        writer.undo()
-        writer.goto(160,140)
-        writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
-
 def update_time():
     global start_time, time_left
+
     elapsed_time = int(time.time() - start_time)
     time_left = max(0, time_limit - elapsed_time)
+
     writer.undo()
-    writer.write(time_left, align='right', font=('Arial', 20, 'normal'))
+    writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
+
     if time_left > 0:
         ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
+    else:
+        game_over()
 
-    if elapsed_time > time_limit:
-    style = ('Arial', 20)
+def game_over():
+    style = ('Arial', 50)
     writer.penup()
-    writer.goto(0,0)
+    writer.goto(0, 0)  # Adjust the position as needed
     writer.color('white')
-    writer.write('GAME OVER!')
-    ontimer(update_time, 1000)  # Initial call to start updating time
+    writer.write("GAME OVER!", align='center', font=style)
+
 
 setup(420, 420, 370, 0)
 hideturtle()
@@ -210,7 +208,7 @@ onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
+update_time()
 world()
 move()
 done()
-
