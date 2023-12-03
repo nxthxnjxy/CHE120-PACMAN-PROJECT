@@ -167,17 +167,36 @@ def move():
     ontimer(move, 100)
 
 
+
 def change(x, y):
     """Change pacman aim if valid."""
+    global start_time, time_left
+
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
-        
+
+        elapsed_time = int(time.time() - start_time)
+        time_left = max(0, time_limit - elapsed_time)
+        writer.undo()
+        writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
+
 writer.penup()
-writer.goto(160,140)
+writer.goto(160, 140)
 writer.pendown()
 writer.color('white')
-writer.write(time_left)
+writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
+
+def update_time():
+    global start_time, time_left
+    elapsed_time = int(time.time() - start_time)
+    time_left = max(0, time_limit - elapsed_time)
+    writer.undo()
+    writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
+    if time_left > 0:
+        ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
+
+ontimer(update_time, 1000)  # Initial call to start updating time
 
 if elapsed_time > time_limit:
     style = ('Arial', 50)
