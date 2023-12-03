@@ -2,7 +2,13 @@
 from random import choice, randrange
 from turtle import *
 from freegames import floor, vector
+import time
+import turtle
 
+time_limit = 120
+start_time = time.time()
+elapsed_time = int(time.time() - start_time)
+time_left = time_limit - elapsed_time
 
 state = {'score': 0}
 path = Turtle(visible=False)
@@ -32,7 +38,7 @@ tiles = [
     0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-    0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
+    0, 1, 1, 0, 1, 1, 1, 1, 3, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
     0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
     0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
@@ -107,7 +113,8 @@ ghost_colors = ['red', 'white', 'green', 'orange', 'purple', 'pink']
 special_pellet_color = 'orange'
 
 def move():
-    """Move pacman and all ghosts."""
+    if time_left == 0:
+        return
     writer.undo()
     writer.write(state['score'])
 
@@ -159,7 +166,8 @@ def move():
 
     for point, course in ghosts:
         if abs(pacman - point) < 20:
-            return
+            return game_over()
+        
 
     ontimer(move, 100)
 
@@ -169,6 +177,19 @@ def change(x, y):
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
+
+def update_time():
+    global start_time, time_left
+
+    elapsed_time = int(time.time() - start_time)
+    time_left = max(0, time_limit - elapsed_time)
+
+    if time_left > 0:
+        ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
+    else:
+        game_over()
+        return
+        
 
 
 setup(420, 420, 370, 0)
@@ -182,6 +203,13 @@ onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
+def game_over():
+    style = ('Arial', 50)
+    writer.penup()
+    writer.goto(0, 0)  # Adjust the position as needed
+    writer.color('Yellow')
+    writer.write("GAME OVER!", align='center', font=style)
+update_time()
 world()
 move()
 done()
