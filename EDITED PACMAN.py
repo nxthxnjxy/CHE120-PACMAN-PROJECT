@@ -53,19 +53,29 @@ def square(x, y):
 
 def offset(point):
     """Return offset of point in tiles."""
-    x = (floor(point.x, 20) + 200) / 20
-    y = (180 - floor(point.y, 20)) / 20
+    x = floor((point.x + 200) / 20)  # Adjusted x calculation
+    y = floor((180 - point.y) / 20)   # Adjusted y calculation
     index = int(x + y * 20)
-    return index
+
+    if 0 <= index < len(tiles):
+        return index
+    else:
+        return -1  # Return -1 if the index is out of range
 
 def valid(point):
     """Return True if point is valid in tiles."""
     index = offset(point)
 
+    if index == -1:
+        return False
+
     if tiles[index] == 0:
         return False
 
     index = offset(point + 19)
+
+    if index == -1:
+        return False
 
     if tiles[index] == 0:
         return False
