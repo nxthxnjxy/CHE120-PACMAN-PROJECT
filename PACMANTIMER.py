@@ -13,6 +13,7 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 import time
+import turtle
 
 
 time_limit = 120
@@ -171,9 +172,18 @@ def change(x, y):
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
+        
+writer.penup()
+writer.goto(160,140)
+writer.pendown()
+writer.color('white')
+writer.write(time_left)
 
 if elapsed_time > time_limit:
-    writer.write("GAME OVER!")
+    style = ('Arial', 50)
+    writer.penup()
+    writer.write("GAME OVER!", align='center')
+    writer.pendown()
 
 
 setup(420, 420, 370, 0)
