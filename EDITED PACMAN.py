@@ -11,13 +11,12 @@ Exercises
 
 from random import choice
 from turtle import *
-
 from freegames import floor, vector
 
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
-aim = vector(5, 0)
+aim = vector(10, 0)
 pacman = vector(-80, 40)
 ghosts = [
     [vector(-180, 160), vector(10, 0)],
@@ -25,6 +24,7 @@ ghosts = [
     [vector(100, 160), vector(0, -10)],
     [vector(100, -160), vector(-10, 0)],
     [vector(100, 150), vector(-10, 0)]
+    [vector(-150, 130), vector(10, 0)]
 ]
 # fmt: off
 tiles = [
