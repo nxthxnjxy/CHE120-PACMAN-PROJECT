@@ -121,22 +121,23 @@ def valid(point): # (A.R.) Checks if a given point is valid in the game world (a
 
 def world(): #(A.R.) Draws the entire game world using the path turtle. It uses the square function and sets the background color to black and the path color to blue.
     """Draw world using path."""
-    bgcolor('black')
-    path.color('blue')
+    bgcolor('black') # (B.P) Set the background color to black
+    path.color('blue')# (B.P) Set the path color to blue
 
+    for index in range(len(tiles)): # (B.P) A loop that iterates over each index in the range from 0 to the length of the tiles 
+        tile = tiles[index] # (B.P)  The variable tile is assigned the value of the element in the tiles list at the current index.\
+        
+        # (B.P) Each iteration of the loop, tile represents the value of the tile at the current index in the game world. 
+        
+        if tile > 0: # (B.P) Checks if the tile (defined above) is greater than 0 (is not a wall), the if statement allows to find the coordinates from the index
+            x = (index % 20) * 20 - 200 # (B.P) Calculate the x-coordinate for the square
+            y = 180 - (index // 20) * 20 # (B.P) Calculate the y-coordinate for the square
+            square(x, y) # (B.P) Draw a square at the calculated coordinates using the square function
 
-    for index in range(len(tiles)):
-        tile = tiles[index]
-
-        if tile > 0:
-            x = (index % 20) * 20 - 200
-            y = 180 - (index // 20) * 20
-            square(x, y)
-
-            if tile == 1:
-                path.up()
-                path.goto(x + 10, y + 10)
-                path.dot(2, 'white')
+            if tile == 1: # (B.P) Checks if the tile (defined above) is equal to 1 (should have a pellet)
+                path.up() # (B.P) Allows to move to a new position to redraw the a specific square in the new position.
+                path.goto(x + 10, y + 10) # (B.P) Goes to the middle of the square to draw the pellet.
+                path.dot(2, 'white') # (B.P) Draws the pellet
 
 
 def move():  # (J.F.) This function helps with the movement of pacman, the ghosts, the score and removes the pellets once pacman has passed over them.)
