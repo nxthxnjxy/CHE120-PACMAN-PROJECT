@@ -104,26 +104,26 @@ def offset(point): # (A.R.) Calculates the offset of a point in the tiles list.
     return index # (A.R.) Return the index calculated above
 
 
-def valid(point):
+def valid(point): # (A.R.) Checks if a given point is valid in the game world (as not a wall).
     """Return True if point is valid in tiles."""
-    index = offset(point)
+    index = offset(point) # (B.P.) Calculates the index of the given point using the offset function above.
 
-    if tiles[index] == 0:
-        return False
+    if tiles[index] == 0: # (B.P.) Checks if the tile at the calculated index is 0 (indicating a wall, as shown on the map). 
+        return False # (B.P.) If the point is considered invalid (if the statement above is true), the statement returns False.
 
-    index = offset(point + 19)
+    index = offset(point + 19) # (B.P.) Calculates the index of the point shifted by 19 units (to check a point near the bottom-right corner of a 20x20 tile) using the offset function above.
 
-    if tiles[index] == 0:
-        return False
+    if tiles[index] == 0: # (B.P.) Checks if the seconf tile at the calculated index is 0 (indicating a wall, as shown on the map). 
+        return False # (B.P.)# (B.P.) If the point is considered invalid (if the statement above is true), the statement returns False.
 
-    return point.x % 20 == 0 or point.y % 20 == 0
-# (A.R.) Checks if a given point is valid in the game world (as not a wall).
+    return point.x % 20 == 0 or point.y % 20 == 0 # (B.P) Checks if the point is on the grid lines (either the x or y coordinate is a multiple of 20). If true, the point is considered valid.
 
-def world():
+
+def world(): #(A.R.) Draws the entire game world using the path turtle. It uses the square function and sets the background color to black and the path color to blue.
     """Draw world using path."""
     bgcolor('black')
     path.color('blue')
-#(A.R.) Draws the entire game world using the path turtle. It uses the square function and sets the background color to black.
+
 
     for index in range(len(tiles)):
         tile = tiles[index]
