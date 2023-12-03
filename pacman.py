@@ -96,13 +96,13 @@ def square(x, y): # (A.R.) Draws a square at the specified coordinates using the
     path.end_fill() # (J.F.) Ends the filling of the shape, completing the square.
 
 
-def offset(point):
-    """Return offset of point in tiles."""
-    x = (floor(point.x, 20) + 200) / 20
-    y = (180 - floor(point.y, 20)) / 20
-    index = int(x + y * 20)
-    return index
-# (A.R.) Calculates the offset of a point in the tiles list.
+def offset(point): # (A.R.) Calculates the offset of a point in the tiles list.
+    """Return offset of point in tiles.""" 
+    x = (floor(point.x, 20) + 200) / 20 # (A.R.) Rounds down the x-coordinate of the point to the nearest multiple of 20.
+    y = (180 - floor(point.y, 20)) / 20 # (A.R.) Rounds down the y-coordinate of the point to the nearest multiple of 20.
+    index = int(x + y * 20) # (A.R.) Combines the x and y offsets to calculate the index within a width of 20 tiles.
+    return index # (A.R.) Return the index calculated above
+
 
 def valid(point):
     """Return True if point is valid in tiles."""
