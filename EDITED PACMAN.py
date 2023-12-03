@@ -17,7 +17,7 @@ state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(10, 0)
-pacman = vector(-80, 40)
+pacman = vector(-79, 40)
 ghosts = [
     [vector(-180, 160), vector(10, 0)],
     [vector(-180, -160), vector(0, 10)],
