@@ -77,11 +77,11 @@ tiles = [
 # (J.F.) There can also be 2's on the map. These would represents spots where pacman can move but there is no pellets. Later in the code, we see that when pacman eats a pellet, the ones become twos.
 # (J.F.) This variable is defined as an array, with each row being one line blocks on the actual map.
 # fmt: on
-Alir3iaz-patch-3
+
 # (A.R.) A list representing the layout of the game world. It uses a flattened representation of a 20x20 grid, where 0 represents a wall, 1 represents a dot, and 2 represents an empty space.
 
 def square(x, y): # (A.R.) Draws a square at the specified coordinates using the path turtle
-main
+    
     """Draw square using path at (x, y)."""
     path.up()  #(J.F.) Allows to move to a new position to redraw the a specific square in the new position.
     path.goto(x, y) # (J.F) Moves to specified x, y coordinates to redraw that square.
@@ -89,11 +89,11 @@ main
     path.begin_fill() # (J.F) Begin filling the shape with the current color.
 
 
-    for count in range(4):
-        path.forward(20)
-        path.left(90)
+    for count in range(4): # (J.F) This function repeats 4 times because it needs to draw all four sides of each square
+        path.forward(20) # (J.F) Moves fowrard by 20 units, the length of a square
+        path.left(90) # (J.F) Moves left by 90 degrees, to change sides.
 
-    path.end_fill()
+    path.end_fill() # (J.F.) Ends the filling of the shape, completing the square.
 
 
 def offset(point):
@@ -144,7 +144,7 @@ def move():  # (J.F.) This function helps with the movement of pacman, the ghost
 # (A.R.) Handles the movement of Pacman and ghosts. It updates the positions, checks for collisions, and continues the game loop
     writer.undo()  # (J.F.) This undoes the previous score after pacman moves.
     writer.write(state['score']) #(J.F.) This writes the new score after pacman moves (which is increased by one if he captured a pellet.
-main
+    
 
     clear() #(J.F.) Clear removes the previous positions of Pacman, ghosts, and other elements on the screen before updating their positions in the next frame.
 
