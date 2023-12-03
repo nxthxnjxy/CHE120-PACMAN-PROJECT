@@ -11,14 +11,49 @@ Exercises
 5. Make the ghosts smarter.
 """
 
-from random import choice
 from turtle import *
-from math import floor  # Import the floor function from the math module
+from math import floor, sqrt
+from heapq import heappush, heappop
 from freegames import vector
 
 def calculate_direction_to_target(source, target):
     """Calculate the vector pointing from source to target."""
     return vector(target.x - source.x, target.y - source.y)
+
+def astar(start, goal, tiles):
+    """A* algorithm for pathfinding."""
+    hq = [(0, start)]
+    visited = set()
+
+    while hq:
+        current_cost, current = heappop(hq)
+
+        if current == goal:
+            path = []
+            while current:
+                path.append(current[1])
+                current = current[0]
+            return path[::-1]
+
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor in neighbors(current, tiles):
+            heappush(hq, (current_cost + 1 + heuristic(neighbor, goal), (current, neighbor)))
+
+    return []
+
+def neighbors(point, tiles):
+    """Return neighbors of a point in tiles."""
+    x, y = point
+    candidates = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    return [neighbor for neighbor in candidates if tiles[neighbor[1]][neighbor[0]] != 0]
+
+def heuristic(a, b):
+    """Heuristic function for A* (Manhattan distance)."""
+    return abs(b[0] - a[0]) + abs(b[1] - a[1])
 
 state = {'score': 0}
 path = Turtle(visible=False)
@@ -124,18 +159,22 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
-        direction_to_player = calculate_direction_to_target(point, pacman)
-        direction_to_player.normalize()
-        course.x = direction_to_player.x
-        course.y = direction_to_player.y
+        path = astar((floor(point.x / 20), floor(point.y / 20)), (floor(pacman.x / 20), floor(pacman.y / 20)), tiles)
 
-        if valid(point + course):
-            point.move(course)
+        if path:
+            next_point = vector(path[0][0] * 20, path[0][1] * 20)
+            direction_to_next = calculate_direction_to_target(point, next_point)
+            direction_to_next.normalize()
+            course.x = direction_to_next.x
+            course.y = direction_to_next.y
         else:
             options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
+
+        if valid(point + course):
+            point.move(course)
 
         up()
         goto(point.x + 10, point.y + 10)
