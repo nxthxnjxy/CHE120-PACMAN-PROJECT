@@ -37,7 +37,7 @@ def neighbors(point, tiles):
     """Return neighbors of a point in tiles."""
     x, y = point
     candidates = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-    return [neighbor for neighbor in candidates if tiles[neighbor[1]][neighbor[0]] != 0]
+    return [neighbor for neighbor in candidates if offset(vector(*neighbor)) != -1 and tiles[offset(vector(*neighbor))] != 0]
 
 def heuristic(a, b):
     """Heuristic function for A* (Manhattan distance)."""
