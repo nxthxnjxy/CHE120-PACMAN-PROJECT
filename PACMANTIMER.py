@@ -3,7 +3,7 @@ from turtle import *
 
 from freegames import floor, vector
 
-state = {'score': 0, 'timer': 120}  # Added timer to the state dictionary
+state = {'score': 0, 'timer': 120}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
@@ -145,12 +145,20 @@ def move():
             game_over()
             return
 
-    state['timer'] -= 1  # Decrease the timer
+    state['timer'] -= 1
 
     if state['timer'] > 0:
-        ontimer(move, 1000)  # Move every 1000 milliseconds (1 second)
+        ontimer(move, 100)
     else:
         game_over()
+
+
+def timer_update():
+    """Update timer display."""
+    writer.undo()
+    writer.write(f"Score: {state['score']}  Time: {state['timer']}s")
+    if state['timer'] > 0:
+        ontimer(timer_update, 1000)  # Update timer every 1000 milliseconds (1 second)
 
 
 def game_over():
@@ -180,4 +188,10 @@ writer.goto(160, 160)
 writer.color('white')
 world()
 move()
+timer_update()
+listen()
+onkey(lambda: change(5, 0), 'Right')
+onkey(lambda: change(-5, 0), 'Left')
+onkey(lambda: change(0, 5), 'Up')
+onkey(lambda: change(0, -5), 'Down')
 done()
