@@ -13,8 +13,8 @@ Exercises
 
 from random import choice
 from turtle import *
-
-from freegames import floor, vector
+from math import floor  # Import the floor function from the math module
+from freegames import vector
 
 def calculate_direction_to_target(source, target):
     """Calculate the vector pointing from source to target."""
