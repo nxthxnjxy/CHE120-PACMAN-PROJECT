@@ -17,7 +17,7 @@ writer = Turtle(visible=False)
 aim = vector(10, 0)
 pacman = vector(-60, 40)
 ghosts = [
-    [vector(-180, 160), vector(10, 0)],
+    [vector(0, 0), vector(20, 0)],
     [vector(-180, -160), vector(0, 10)],
     [vector(100, 160), vector(0, -10)],
     [vector(100, -160), vector(-10, 0)],
@@ -169,7 +169,10 @@ def move():
 
         up()
         goto(point.x + 10, point.y + 10)
-        dot(20, ghost_colors[i])
+        if i == 0:
+            dot(30, ghost_colors[i])  # Increase size to 30
+        else:
+            dot(20, ghost_colors[i])
 
     update()
 
