@@ -1,23 +1,14 @@
-"""Pacman, classic arcade game.
 
-Exercises
-
-1. Change the board. -DONE
-2. Change the number of ghosts. -DONE
-3. Change where pacman starts. -DONE
-4. Make the ghosts faster/slower. -DONE
-5. Make the ghosts smarter.
-"""
-
-from random import choice
+from random import choice, randrange
 from turtle import *
 from freegames import floor, vector
+
 
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(10, 0)
-pacman = vector(-79, 40)
+pacman = vector(-60, 40)
 ghosts = [
     [vector(-180, 160), vector(10, 0)],
     [vector(-180, -160), vector(0, 10)],
@@ -29,7 +20,7 @@ ghosts = [
 # fmt: off
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0,
     0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -45,20 +36,21 @@ tiles = [
     0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
     0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 3, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 # fmt: on
 
 
-def square(x, y):
+def square(x, y, color='white'):
     """Draw square using path at (x, y)."""
     path.up()
     path.goto(x, y)
     path.down()
     path.begin_fill()
 
+    path.color('blue')  # Set the fill color
     for count in range(4):
         path.forward(20)
         path.left(90)
@@ -105,9 +97,14 @@ def world():
             if tile == 1:
                 path.up()
                 path.goto(x + 10, y + 10)
-                path.dot(2, 'white')
+                path.dot(5, 'white')
+            elif tile == 3:
+                path.up()
+                path.goto(x + 10, y + 10)
+                path.dot(5, 'orange')
 
 ghost_colors = ['red', 'white', 'green', 'orange', 'purple', 'pink']
+special_pellet_color = 'orange'
 
 def move():
     """Move pacman and all ghosts."""
@@ -121,13 +118,21 @@ def move():
 
     index = offset(pacman)
 
-    if tiles[index] == 1:
+    if tiles[index] == 3:
+        tiles[index] = 2
+        state['score'] += 5
+        x = (index % 20) * 20 - 200
+        y = 180 - (index // 20) * 20
+        square(x, y, special_pellet_color)
+
+    elif tiles[index] == 1:
         tiles[index] = 2
         state['score'] += 1
         x = (index % 20) * 20 - 200
         y = 180 - (index // 20) * 20
         square(x, y)
-
+        
+        
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
