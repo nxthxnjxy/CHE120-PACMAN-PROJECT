@@ -191,14 +191,13 @@ def update_time():
     if time_left > 0:
         ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
 
-
-if elapsed_time > time_limit:
+    if elapsed_time > time_limit:
     style = ('Arial', 20)
     writer.penup()
     writer.goto(0,0)
     writer.color('white')
     writer.write('GAME OVER!')
-ontimer(update_time, 1000)  # Initial call to start updating time
+    ontimer(update_time, 1000)  # Initial call to start updating time
 
 setup(420, 420, 370, 0)
 hideturtle()
