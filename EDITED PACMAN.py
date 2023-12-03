@@ -108,7 +108,6 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
-
 def move():
     """Move pacman and all ghosts."""
     writer.undo()
@@ -133,15 +132,22 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
+        # Calculate the direction to the player
+        direction_to_player = calculate_direction_to_target(point, pacman)
+
+        # Normalize the vector to ensure constant speed
+        direction_to_player.normalize()
+
+        # Update the ghost's course to move towards the player
+        course.x = direction_to_player.x
+        course.y = direction_to_player.y
+
+        # Move the ghost
         if valid(point + course):
             point.move(course)
         else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
+            # If the new position is not valid, choose a random direction
+            options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
@@ -150,7 +156,6 @@ def move():
         goto(point.x + 10, point.y + 10)
         dot(20, 'red')
 
-
     update()
 
     for point, course in ghosts:
@@ -158,7 +163,6 @@ def move():
             return
 
     ontimer(move, 100)
-
 
 def change(x, y):
     """Change pacman aim if valid."""
