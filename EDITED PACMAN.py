@@ -107,6 +107,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
+ghost_colors = ['red', 'white', 'green', 'orange', 'purple', 'pink']
 
 def move():
     """Move pacman and all ghosts."""
@@ -131,7 +132,7 @@ def move():
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
 
-    for point, course in ghosts:
+    for i, (point, course) in enumerate(ghosts):
         if valid(point + course):
             point.move(course)
         else:
@@ -147,7 +148,7 @@ def move():
 
         up()
         goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        dot(20, ghost_colors[i])
 
     update()
 
