@@ -16,7 +16,7 @@ import time
 import turtle
 
 
-time_limit = 120
+time_limit = 10
 start_time = time.time()
 elapsed_time = int(time.time() - start_time)
 
@@ -179,30 +179,25 @@ def change(x, y):
         elapsed_time = int(time.time() - start_time)
         time_left = max(0, time_limit - elapsed_time)
         writer.undo()
+        writer.goto(160,140)
         writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
-
-writer.penup()
-writer.goto(160, 140)
-writer.pendown()
-writer.color('white')
-writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
 
 def update_time():
     global start_time, time_left
     elapsed_time = int(time.time() - start_time)
     time_left = max(0, time_limit - elapsed_time)
     writer.undo()
-    writer.write(time_left, align='center', font=('Arial', 20, 'normal'))
+    writer.write(time_left, align='right', font=('Arial', 20, 'normal'))
     if time_left > 0:
         ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
-
 ontimer(update_time, 1000)  # Initial call to start updating time
 
 if elapsed_time > time_limit:
-    style = ('Arial', 50)
+    style = ('Arial', 20)
     writer.penup()
-    writer.write("GAME OVER!", align='center')
-    writer.pendown()
+    writer.goto(0,0)
+    writer.color('white')
+    writer.write('GAME OVER!')
 
 
 setup(420, 420, 370, 0)
@@ -219,3 +214,4 @@ onkey(lambda: change(0, -10), 'Down')
 world()
 move()
 done()
+
