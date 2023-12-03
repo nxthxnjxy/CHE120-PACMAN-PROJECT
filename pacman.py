@@ -80,14 +80,14 @@ tiles = [
 Alir3iaz-patch-3
 # (A.R.) A list representing the layout of the game world. It uses a flattened representation of a 20x20 grid, where 0 represents a wall, 1 represents a dot, and 2 represents an empty space.
 
-def square(x, y):
+def square(x, y): # (A.R.) Draws a square at the specified coordinates using the path turtle
 main
     """Draw square using path at (x, y)."""
-    path.up()
-    path.goto(x, y)
-    path.down()
-    path.begin_fill()
-# (A.R.) Draws a square at the specified coordinates using the path turtle
+    path.up()  #(J.F.) Allows to move to a new position to redraw the a specific square in the new position.
+    path.goto(x, y) # (J.F) Moves to specified x, y coordinates to redraw that square.
+    path.down() # (J.F) Goes back down, which allows to draw the new square. (Cancels the path.up which is for moving)
+    path.begin_fill() # (J.F) Begin filling the shape with the current color.
+
 
     for count in range(4):
         path.forward(20)
@@ -141,10 +141,9 @@ def world():
 
 def move():  # (J.F.) This function helps with the movement of pacman, the ghosts, the score and removes the pellets once pacman has passed over them.)
     """Move pacman and all ghosts."""
-Alir3iaz-patch-3
 # (A.R.) Handles the movement of Pacman and ghosts. It updates the positions, checks for collisions, and continues the game loop
-    writer.undo()
-    writer.write(state['score'])
+    writer.undo()  # (J.F.) This undoes the previous score after pacman moves.
+    writer.write(state['score']) #(J.F.) This writes the new score after pacman moves (which is increased by one if he captured a pellet.
 main
 
     clear() #(J.F.) Clear removes the previous positions of Pacman, ghosts, and other elements on the screen before updating their positions in the next frame.
