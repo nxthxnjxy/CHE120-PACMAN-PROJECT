@@ -188,6 +188,7 @@ def update_time():
         ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
     else:
         game_over()
+        return  # Stop further updates when the game is over
 
 
 setup(420, 420, 370, 0)
@@ -212,4 +213,5 @@ def game_over():
 update_time()
 world()
 move()
-done()
+
+#done()
