@@ -1,84 +1,56 @@
-from turtle import *
-from math import floor
-from heapq import heappush, heappop
+"""Pacman, classic arcade game.
+
+Exercises
+
+1. Change the board. -DONE
+2. Change the number of ghosts. -DONE
+3. Change where pacman starts. -DONE
+4. Make the ghosts faster/slower. -DONE
+5. Make the ghosts smarter.
+"""
+
 from random import choice
-from freegames import vector
+from turtle import *
 
-def calculate_direction_to_target(source, target):
-    """Calculate the vector pointing from source to target."""
-    return vector(target.x - source.x, target.y - source.y)
-
-def astar(start, goal, tiles):
-    """A* algorithm for pathfinding."""
-    hq = [(0, start)]
-    visited = set()
-
-    while hq:
-        current_cost, current = heappop(hq)
-
-        if current == goal:
-            path = []
-            while current:
-                path.append(current[1])
-                current = current[0]
-            return path[::-1]
-
-        if current in visited:
-            continue
-
-        visited.add(current)
-
-        for neighbor in neighbors(current, tiles):
-            heappush(hq, (current_cost + 1 + heuristic(neighbor, goal), (current, neighbor)))
-
-    return []
-
-def neighbors(point, tiles):
-    """Return neighbors of a point in tiles."""
-    x, y = point
-    candidates = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-    return [neighbor for neighbor in candidates if offset(vector(*neighbor)) != -1 and tiles[offset(vector(*neighbor))] != 0]
-
-def heuristic(a, b):
-    """Heuristic function for A* (Manhattan distance)."""
-    return abs(b[0] - a[0]) + abs(b[1] - a[1])
+from freegames import floor, vector
 
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
-pacman = vector(-40, -80)
+pacman = vector(-80, 40)
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(10, 0)],
+    [vector(-180, -160), vector(0, 10)],
+    [vector(100, 160), vector(0, -10)],
+    [vector(100, -160), vector(-10, 0)],
+    [vector(100, 150), vector(-10, 0)]
 ]
-
 # fmt: off
 tiles = [
-   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-   0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-   0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-   0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
-   0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
+    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 # fmt: on
+
 
 def square(x, y):
     """Draw square using path at (x, y)."""
@@ -93,36 +65,29 @@ def square(x, y):
 
     path.end_fill()
 
+
 def offset(point):
     """Return offset of point in tiles."""
-    x = floor((point.x + 200) / 20)
-    y = floor((180 - point.y) / 20)
+    x = (floor(point.x, 20) + 200) / 20
+    y = (180 - floor(point.y, 20)) / 20
     index = int(x + y * 20)
+    return index
 
-    if 0 <= index < len(tiles):
-        return index
-    else:
-        return -1
 
 def valid(point):
     """Return True if point is valid in tiles."""
     index = offset(point)
-
-    if index == -1:
-        return False
 
     if tiles[index] == 0:
         return False
 
     index = offset(point + 19)
 
-    if index == -1:
-        return False
-
     if tiles[index] == 0:
         return False
 
     return point.x % 20 == 0 or point.y % 20 == 0
+
 
 def world():
     """Draw world using path."""
@@ -141,6 +106,7 @@ def world():
                 path.up()
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
+
 
 def move():
     """Move pacman and all ghosts."""
@@ -166,22 +132,18 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
-        path = astar((floor(point.x / 20), floor(point.y / 20)), (floor(pacman.x / 20), floor(pacman.y / 20)), tiles)
-
-        if path:
-            next_point = vector(path[0][0] * 20, path[0][1] * 20)
-            direction_to_next = calculate_direction_to_target(point, next_point)
-            direction_to_next.normalize()
-            course.x = direction_to_next.x
-            course.y = direction_to_next.y
+        if valid(point + course):
+            point.move(course)
         else:
-            options = [vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)]
+            options = [
+                vector(10, 0),
+                vector(-10, 0),
+                vector(0, 10),
+                vector(0, -10),
+            ]
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
-
-        if valid(point + course):
-            point.move(course)
 
         up()
         goto(point.x + 10, point.y + 10)
@@ -195,11 +157,13 @@ def move():
 
     ontimer(move, 100)
 
+
 def change(x, y):
     """Change pacman aim if valid."""
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
+
 
 setup(420, 420, 370, 0)
 hideturtle()
