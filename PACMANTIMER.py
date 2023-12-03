@@ -189,13 +189,6 @@ def update_time():
     else:
         game_over()
 
-def game_over():
-    style = ('Arial', 50)
-    writer.penup()
-    writer.goto(0, 0)  # Adjust the position as needed
-    writer.color('white')
-    writer.write("GAME OVER!", align='center', font=style)
-
 
 setup(420, 420, 370, 0)
 hideturtle()
@@ -208,6 +201,14 @@ onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
+
+def game_over():
+    style = ('Arial', 50)
+    writer.penup()
+    writer.goto(0, 0)  # Adjust the position as needed
+    writer.color('white')
+    writer.write("GAME OVER!", align='center', font=style)
+
 update_time()
 world()
 move()
