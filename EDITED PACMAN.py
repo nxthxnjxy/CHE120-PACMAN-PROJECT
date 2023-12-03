@@ -1,4 +1,5 @@
 
+
 from random import choice, randrange
 from turtle import *
 from freegames import floor, vector
@@ -111,6 +112,14 @@ def world():
 
 ghost_colors = ['red', 'white', 'green', 'orange', 'purple', 'pink']
 special_pellet_color = 'orange'
+def game_win():
+        style = ('Arial', 50)
+        writer.penup()
+        writer.goto(0, 0)  # Adjust the position as needed
+        writer.color('Yellow')
+        writer.write("YOU WIN!", align='center', font=style) 
+       
+
 
 def move():
     if time_left == 0:
@@ -168,6 +177,9 @@ def move():
         if abs(pacman - point) < 20:
             return game_over()
         
+    if state['score'] == 179:  # Assuming 179 is the total number of pellets
+        game_win()
+        return
 
     ontimer(move, 100)
 
