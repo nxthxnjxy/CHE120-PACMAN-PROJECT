@@ -238,6 +238,9 @@ def update_time():
     writer2.undo()
     writer2.write(time_left)
 
+    if state['score'] == 179:
+        return
+
     if time_left > 0:
         ontimer(update_time, 1000)  
     else:
