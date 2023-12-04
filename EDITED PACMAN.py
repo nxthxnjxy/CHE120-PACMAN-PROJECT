@@ -15,12 +15,13 @@ path = Turtle(visible=False)
 path2 = Turtle(visible=False)
 writer = Turtle(visible=False)
 writer2 = Turtle(visible=False)
+writer3 = Turtle(visible=False)
 aim = vector(10, 0)
 aim2 = vector(10, 0)
 pacman = vector(-30, 40)
 pacman2 = vector(-60, 40)
 ghosts = [
-    [vector(-180, 160), vector(30, 0)],
+    [vector(-180, 100), vector(30, 0)],
     [vector(-180, -160), vector(0, 10)],
     [vector(100, 160), vector(0, -10)],
     [vector(100, -160), vector(-10, 0)],
@@ -197,7 +198,7 @@ def move():
         up()
         goto(point.x + 10, point.y + 10)
         if i == 0:
-            dot(30, ghost_colors[i])  # Increase size to 30
+            dot(30, ghost_colors[i]) 
         else:
             dot(20, ghost_colors[i])
 
@@ -235,7 +236,7 @@ def update_time():
     writer2.write(time_left)
 
     if time_left > 0:
-        ontimer(update_time, 1000)  # Update every 1000 milliseconds (1 second)
+        ontimer(update_time, 1000)  
     else:
         game_over()
         return
@@ -243,7 +244,7 @@ def update_time():
 def game_win():
         style = ('Arial', 50)
         writer.penup()
-        writer.goto(0, 0)  # Adjust the position as needed
+        writer.goto(0, 0)  
         writer.color('Yellow')
         writer.write("YOU WIN!", align='center', font=style) 
        
@@ -257,6 +258,9 @@ writer.write(state['score'])
 writer2.goto(160, -160)
 writer2.color('white')
 writer2.write(time_left)
+writer3.goto(-75, 190)
+writer3.color('Yellow')
+writer3.write('2 PLAYER PACMAN')
 listen()
 onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
