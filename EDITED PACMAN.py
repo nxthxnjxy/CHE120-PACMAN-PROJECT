@@ -203,7 +203,10 @@ def move():
             dot(20, ghost_colors[i])
 
     update()
-
+    
+    if state['score'] == 179:
+        return game_win()
+        
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return game_over()
