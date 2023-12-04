@@ -1,3 +1,5 @@
+# Nathan Jayasena, Blake Pedersen, Jacob Finch, Ali Riaz
+
 
 from random import choice, randrange
 from turtle import *
