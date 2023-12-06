@@ -1,4 +1,5 @@
 # Nathan Jayasena (N.J.), Ali Riaz (A.R.), Jacob Finch (J.F), Blake Pedersen (B.P.)
+# GITHUB USERNAME: nxthxnjxy, REPOSITORY: CHE120-PACMAN-PROJECT
 
 
 """Pacman, classic arcade game.
