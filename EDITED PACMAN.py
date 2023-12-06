@@ -1,4 +1,5 @@
 # Nathan Jayasena, Blake Pedersen, Jacob Finch, Ali Riaz
+# GITHUB USERNAME: nxthxnjxy, REPOSITORY: CHE120-PACMAN-PROJECT
 
 
 from random import choice, randrange
